@@ -48,7 +48,10 @@
         crossOrigin: 'anonymous'
     }).on('error', () => msg('CORSのためi.imgur.comの画像しか使えません', true));
     inputURL.elm.trigger('change');
-    addBtn(body.append('<br>'), '処理開始', () => main());
+    addBtn(body.append('<br>'), '処理開始', () => main()).css({
+        color: 'white',
+        backgroundColor: 'red'
+    });
     const main = async () => {
         const img = imgElm.get(0),
               {width, height} = img,
@@ -60,7 +63,7 @@
               arr = [];
         for(let i = 0; i < data.length; i += 4) {
             const i2 = i >> 2;
-            if(i2 % width === 0) await dialog(`RGB to HSL (${i2}/${width})`);
+            if(i2 % width === 0) await dialog(`RGB to HSL (${i2}/${data.length >> 2})`);
             const [r, g, b, a] = data.slice(i, i + 4);
             if(!a) {
                 arr.push(null);
