@@ -15,7 +15,7 @@
     ].map(v => `https://rpgen3.github.io/mylib/export/${v}.mjs`));
     $('<span>').appendTo(head).text('画像の色相だけ変える');
     const addBtn = (h, ttl, func) => $('<button>').appendTo(h).text(ttl).on('click', func);
-    const {rgb2hsl} = await import('https://rpgen3.github.io/hue/mjs/rgb2hsl'),
+    const {rgb2hsl} = await import('https://rpgen3.github.io/hue/mjs/rgb2hsl.mjs'),
           hsl2rgb = (h, s, l) => rpgen3.getRGBA(`hsl(${h},${s}%,${l}%)`);
     const msg = (()=>{
         const elm = $('<div>').appendTo(body);
