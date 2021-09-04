@@ -1,5 +1,6 @@
 (async () => {
     const {importAll, getScript} = await import(`https://rpgen3.github.io/mylib/export/import.mjs`);
+    await getScript('https://code.jquery.com/jquery-3.3.1.min.js');
     const $ = window.$;
     const html = $('<div>').appendTo($('body')).css({
         'text-align': 'center',
@@ -81,7 +82,7 @@
         ctx.putImageData(new ImageData(data, width, height), 0, 0);
         return cv;
     };
-    const addBtnSave = cv => addBtn(foot, '画像の保存', () => $('<a>').prop({
+    const addBtnSave = cv => addBtn(foot, '↑画像の保存', () => $('<a>').prop({
         href: cv.get(0).toDataURL('image/png'),
         download: 'hue.png'
     }).get(0).click());
