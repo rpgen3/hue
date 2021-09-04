@@ -73,7 +73,7 @@
         }
         foot.empty();
         for(let i = 0; i < 12; i++) {
-            addBtnSave(toCv(changeHue(arr, i * 30), width, height).appendTo(foot));
+            addBtnSave(i, toCv(changeHue(arr, i * 30), width, height).appendTo(foot));
             await dialog(`HSL to RGB (${i}/12)`);
         }
         foot.children().each((i, e) => $(e).after('<br>'));
@@ -99,7 +99,7 @@
         ctx.putImageData(new ImageData(data, width, height), 0, 0);
         return cv;
     };
-    const addBtnSave = cv => addBtn(foot, '↑画像の保存', () => $('<a>').prop({
+    const addBtnSave = (i, cv) => addBtn(foot, `${i}:↑画像の保存`, () => $('<a>').prop({
         href: cv.get(0).toDataURL('image/png'),
         download: 'hue.png'
     }).get(0).click());
