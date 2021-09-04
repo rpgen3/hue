@@ -2,7 +2,7 @@
     const {importAll, getScript} = await import(`https://rpgen3.github.io/mylib/export/import.mjs`);
     await getScript('https://code.jquery.com/jquery-3.3.1.min.js');
     const $ = window.$;
-    const html = $('<div>').appendTo($('body')).css({
+    const html = $('body').empty().css({
         'text-align': 'center',
         padding: '1em',
         'user-select': 'none'
@@ -25,6 +25,11 @@
             backgroundColor: isError ? 'pink' : 'lightblue'
         });
     })();
+    const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+    const dialog = async str => {
+        msg(str);
+        await sleep(30);
+    };
     $('<input>').appendTo(body).prop({
         type: 'file'
     }).on('change', ({target}) => {
@@ -33,7 +38,7 @@
     });
     const inputURL = rpgen3.addInputStr(body,{
         label: '画像URL入力',
-        value: 'https://i.imgur.com/IRQAYsN.png'
+        value: 'https://i.imgur.com/uUZBOj6.png'
     });
     inputURL.elm.on('change', () => {
         imgElm.prop('src',inputURL());
@@ -43,8 +48,8 @@
         crossOrigin: 'anonymous'
     }).on('error', () => msg('CORSのためi.imgur.comの画像しか使えません', true));
     inputURL.elm.trigger('change');
-    addBtn(body, '処理開始', () => main());
-    const main = () => {
+    addBtn(body.append('<br>'), '処理開始', () => main());
+    const main = async () => {
         const img = imgElm.get(0),
               {width, height} = img,
               cv = $('<canvas>').prop({width, height}),
@@ -60,10 +65,16 @@
                 continue;
             }
             arr.push(rgb2hsl(r, g, b));
+            const i2 = i >> 2;
+            if(i2 % width === 0) await dialog(`RGB to HSL (${i2}/${width})`);
         }
         foot.empty();
-        for(let i = 0; i < 12; i++) addBtnSave(toCv(changeHue(arr, i * 30), width, height).appendTo(foot));
-        foot.each((i, e) => $(e).after('<br>'));
+        for(let i = 0; i < 12; i++) {
+            addBtnSave(toCv(changeHue(arr, i * 30), width, height).appendTo(foot));
+            await dialog(`HSL to RGB (${i}/12)`);
+        }
+        foot.children().each((i, e) => $(e).after('<br>'));
+        await dialog(`finish`);
     };
     const changeHue = (arr, hue) => {
         const data = new Uint8ClampedArray(arr.length << 2);
@@ -75,6 +86,7 @@
             data[i4] = r;
             data[i4 + 1] = g;
             data[i4 + 2] = b;
+            data[i4 + 3] = 255;
         }
         return data;
     };
