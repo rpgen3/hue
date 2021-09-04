@@ -42,6 +42,7 @@
     const imgElm = $('<img>').appendTo(body).prop({
         crossOrigin: 'anonymous'
     }).on('error', () => msg('CORSのためi.imgur.comの画像しか使えません', true));
+    inputURL.elm.trigger('change');
     addBtn(body, '処理開始', () => main());
     const main = () => {
         const img = imgElm.get(0),
@@ -67,7 +68,7 @@
     const changeHue = (arr, hue) => {
         const data = new Uint8ClampedArray(arr.length << 2);
         for(const [i, v] of arr.entries()) {
-            if(v) continue;
+            if(!v) continue;
             const [h, s, l] = v,
                   [r, g, b] = hsl2rgb(hue, s, l);
             const i4 = i << 2;
