@@ -59,14 +59,14 @@
               {data} = imgData,
               arr = [];
         for(let i = 0; i < data.length; i += 4) {
+            const i2 = i >> 2;
+            if(i2 % width === 0) await dialog(`RGB to HSL (${i2}/${width})`);
             const [r, g, b, a] = data.slice(i, i + 4);
             if(!a) {
                 arr.push(null);
                 continue;
             }
             arr.push(rgb2hsl(r, g, b));
-            const i2 = i >> 2;
-            if(i2 % width === 0) await dialog(`RGB to HSL (${i2}/${width})`);
         }
         foot.empty();
         for(let i = 0; i < 12; i++) {
