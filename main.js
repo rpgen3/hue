@@ -14,10 +14,12 @@
         'input',
         'css'
     ].map(v => `https://rpgen3.github.io/mylib/export/${v}.mjs`));
+    const rpgen4 = await importAll([
+        'hsl2rgb',
+        'rgb2hsl'
+    ].map(v => `https://rpgen3.github.io/hue/mjs/${v}.mjs`));
     $('<span>').appendTo(head).text('画像の色相だけ変える');
     const addBtn = (h, ttl, func) => $('<button>').appendTo(h).text(ttl).on('click', func);
-    const {rgb2hsl} = await import('https://rpgen3.github.io/hue/mjs/rgb2hsl.mjs'),
-          hsl2rgb = (h, s, l) => rpgen3.getRGBA(`hsl(${h},${s}%,${l}%)`);
     const msg = (()=>{
         const elm = $('<div>').appendTo(body);
         return (str, isError) => $('<span>').appendTo(elm.empty()).text(str).css({
@@ -69,7 +71,7 @@
                 arr.push(null);
                 continue;
             }
-            arr.push(rgb2hsl(r, g, b));
+            arr.push(rpgen4.rgb2hsl(r, g, b));
         }
         foot.empty();
         for(let i = 0; i < 12; i++) {
@@ -83,7 +85,7 @@
             if(i % width === 0) await dialog(`HSL to RGB (${i}/${arr.length})`);
             if(!v) continue;
             const [h, s, l] = v,
-                  [r, g, b] = hsl2rgb(hue, s, l);
+                  [r, g, b] = rpgen4.hsl2rgb(hue, s, l);
             const i4 = i << 2;
             data[i4] = r;
             data[i4 + 1] = g;
