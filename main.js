@@ -73,14 +73,14 @@
         }
         foot.empty();
         for(let i = 0; i < 12; i++) {
-            addBtnSave($('<div>').appendTo(foot).text(`${i}:`), toCv(changeHue(arr, i * 30), width, height).appendTo(foot));
-            await dialog(`HSL to RGB (${i}/12)`);
+            addBtnSave($('<div>').appendTo(foot).text(`${i}:`), toCv(await changeHue(arr, i * 30, width), width, height).appendTo(foot));
         }
         await dialog(`finish`);
     };
-    const changeHue = (arr, hue) => {
+    const changeHue = async (arr, hue, width) => {
         const data = new Uint8ClampedArray(arr.length << 2);
         for(const [i, v] of arr.entries()) {
+            if(i % width === 0) await dialog(`HSL to RGB (${i}/${arr.length})`);
             if(!v) continue;
             const [h, s, l] = v,
                   [r, g, b] = hsl2rgb(hue, s, l);
