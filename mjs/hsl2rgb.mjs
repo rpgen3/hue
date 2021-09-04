@@ -1,5 +1,5 @@
 const clamp = (num, min, max) => Math.max(min, Math.min(max, num));
-const hsl2rgb = (hue, saturation, luminance) => {
+export const hsl2rgb = (hue, saturation, luminance) => {
     let max = 0, min = 0,
         r = 0, g = 0, b = 0;
     const h = clamp(hue, 0, 360) % 360,
