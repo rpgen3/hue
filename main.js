@@ -98,7 +98,7 @@
         ctx.putImageData(new ImageData(data, width, height), 0, 0);
         return cv;
     };
-    const addBtnSave = (h, cv) => addBtn(h, '↓画像の保存', () => $('<a>').prop({
+    const addBtnSave = (h, cv) => addBtn(h, '画像の保存↓', () => $('<a>').prop({
         href: cv.get(0).toDataURL('image/png'),
         download: 'hue.png'
     }).get(0).click());
