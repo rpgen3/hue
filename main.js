@@ -11,6 +11,7 @@
           body = $('<div>').appendTo(html),
           foot = $('<div>').appendTo(html);
     const rpgen3 = await importAll([
+        'input',
         'css'
     ].map(v => `https://rpgen3.github.io/mylib/export/${v}.mjs`));
     $('<span>').appendTo(head).text('画像の色相だけ変える');
